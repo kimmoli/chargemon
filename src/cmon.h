@@ -1,0 +1,50 @@
+#ifndef CMON_H
+#define CMON_H
+#include <QObject>
+
+class Cmon : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QString version READ readVersion NOTIFY versionChanged())
+
+    Q_PROPERTY(QString dcinVoltage READ readDcinVoltage NOTIFY dcinVoltageChanged())
+    Q_PROPERTY(QString batteryVoltage READ readBatteryVoltage NOTIFY batteryVoltageChanged())
+    Q_PROPERTY(QString batteryCurrent READ readBatteryCurrent NOTIFY batteryCurrentChanged())
+    Q_PROPERTY(QString batteryCapacity READ readBatteryCapacity NOTIFY batteryCapacityChanged())
+    Q_PROPERTY(QString batteryTemperature READ readBatteryTemperature NOTIFY batteryTemperatureChanged())
+
+public:
+    explicit Cmon(QObject *parent = 0);
+    ~Cmon();
+
+    QString readVersion();
+
+    QString readDcinVoltage();
+    QString readBatteryVoltage();
+    QString readBatteryCurrent();
+    QString readBatteryCapacity();
+    QString readBatteryTemperature();
+
+    Q_INVOKABLE void update();
+
+signals:
+    void versionChanged();
+
+    void batteryCurrentChanged();
+    void batteryVoltageChanged();
+    void dcinVoltageChanged();
+    void batteryCapacityChanged();
+    void batteryTemperatureChanged();
+
+private:
+    float m_dcinvoltage;
+    float m_voltage;
+    float m_current;
+    float m_capacity;
+    float m_temperature;
+
+};
+
+
+#endif // CMON_H
+
