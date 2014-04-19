@@ -14,7 +14,7 @@ Cmon::~Cmon()
 }
 
 /* Return git describe as string (see .pro file) */
-QString Fantsu::readVersion()
+QString Cmon::readVersion()
 {
     return GITHASH;
 }
@@ -28,6 +28,12 @@ void Cmon::update()
 
     QString p_dcinnow = p.readAllStandardOutput();
     m_dcinvoltage = p_dcinnow.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
+
+    p.start("sh", QStringList() << "-c" << "cat /sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/usbin");
+    p.waitForFinished(-1);
+
+    QString p_usbinnow = p.readAllStandardOutput();
+    m_usbinvoltage = p_usbinnow.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
 
     p.start("sh", QStringList() << "-c" << "cat /sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/current_now");
     p.waitForFinished(-1);
@@ -54,9 +60,10 @@ void Cmon::update()
     m_temperature = p_temp.toFloat() / 10;
 
 
-    emit batteryCurrentChanged();
-    emit batteryVoltageChanged();
     emit dcinVoltageChanged();
+    emit usbinVoltageChanged();
+    emit batteryVoltageChanged();
+    emit batteryCurrentChanged();
     emit batteryCapacityChanged();
     emit batteryTemperatureChanged();
 }
@@ -65,6 +72,11 @@ void Cmon::update()
 QString Cmon::readDcinVoltage()
 {
     return QString::number(m_dcinvoltage) + " V";
+}
+
+QString Cmon::readUsbinVoltage()
+{
+    return QString::number(m_usbinvoltage) + " V";
 }
 
 QString Cmon::readBatteryVoltage()

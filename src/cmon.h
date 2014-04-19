@@ -8,6 +8,7 @@ class Cmon : public QObject
     Q_PROPERTY(QString version READ readVersion NOTIFY versionChanged())
 
     Q_PROPERTY(QString dcinVoltage READ readDcinVoltage NOTIFY dcinVoltageChanged())
+    Q_PROPERTY(QString usbinVoltage READ readUsbinVoltage NOTIFY usbinVoltageChanged())
     Q_PROPERTY(QString batteryVoltage READ readBatteryVoltage NOTIFY batteryVoltageChanged())
     Q_PROPERTY(QString batteryCurrent READ readBatteryCurrent NOTIFY batteryCurrentChanged())
     Q_PROPERTY(QString batteryCapacity READ readBatteryCapacity NOTIFY batteryCapacityChanged())
@@ -20,6 +21,7 @@ public:
     QString readVersion();
 
     QString readDcinVoltage();
+    QString readUsbinVoltage();
     QString readBatteryVoltage();
     QString readBatteryCurrent();
     QString readBatteryCapacity();
@@ -30,14 +32,16 @@ public:
 signals:
     void versionChanged();
 
-    void batteryCurrentChanged();
-    void batteryVoltageChanged();
     void dcinVoltageChanged();
+    void usbinVoltageChanged();
+    void batteryVoltageChanged();
+    void batteryCurrentChanged();
     void batteryCapacityChanged();
     void batteryTemperatureChanged();
 
 private:
     float m_dcinvoltage;
+    float m_usbinvoltage;
     float m_voltage;
     float m_current;
     float m_capacity;

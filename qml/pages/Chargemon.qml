@@ -58,7 +58,7 @@ Page
             id: column
 
             width: page.width
-            spacing: Theme.paddingLarge
+            spacing: Theme.paddingSmall
             PageHeader
             {
                 title: "Chargemon"
@@ -129,17 +129,17 @@ Page
                 font.pixelSize: Theme.fontSizeExtraLarge
             }
 
-            Slider
+            SectionHeader
             {
-                id: rateSlider
-                width: parent.width-10
-                label: "Update interval"
-                anchors.horizontalCenter: parent.Center
-                minimumValue: 100
-                maximumValue: 2000
-                value: 500
-                stepSize: 100
-                valueText: value + " ms"
+                text: "USB input voltage"
+            }
+
+            Label
+            {
+                x: Theme.paddingLarge
+                text: cmon.usbinVoltage
+                color: Theme.primaryColor
+                font.pixelSize: Theme.fontSizeExtraLarge
             }
 
 
@@ -147,7 +147,7 @@ Page
 
         Timer
         {
-            interval: rateSlider.value
+            interval: 500
             running: true
             repeat: true
             triggeredOnStart: true
