@@ -1,7 +1,14 @@
-#include "cmon.h"
-#include <QSettings>
+/*
+    Charge Monitor (C) 2014 Kimmo Lindholm
+*/
+
 #include <QCoreApplication>
-#include <QProcess>
+#include <QRegExp>
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
+
+#include "cmon.h"
 
 Cmon::Cmon(QObject *parent) :
     QObject(parent)
@@ -19,45 +26,48 @@ QString Cmon::readVersion()
     return GITHASH;
 }
 
+/* Read first line of file with Qt functions */
+QString Cmon::readOneLineFromFile(QString name)
+{
+    QString line;
+
+    QFile inputFile( name );
+
+    if ( inputFile.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    {
+       QTextStream in( &inputFile );
+       line = in.readLine();
+       inputFile.close();
+    }
+    else
+    {
+        line = QString("Error occured.");
+    }
+
+    return line;
+}
+
 void Cmon::update()
 {
-    QProcess p;
+    QString p_tmp;
 
-    p.start("sh", QStringList() << "-c" << "cat /sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/dcin");
-    p.waitForFinished(-1);
+    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/dcin");
+    m_dcinvoltage = p_tmp.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
 
-    QString p_dcinnow = p.readAllStandardOutput();
-    m_dcinvoltage = p_dcinnow.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
+    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/usbin");
+    m_usbinvoltage = p_tmp.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
 
-    p.start("sh", QStringList() << "-c" << "cat /sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/usbin");
-    p.waitForFinished(-1);
+    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/current_now");
+    m_current = p_tmp.toFloat() / 1e6;
 
-    QString p_usbinnow = p.readAllStandardOutput();
-    m_usbinvoltage = p_usbinnow.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
+    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/voltage_now");
+    m_voltage = p_tmp.toFloat() / 1e6;
 
-    p.start("sh", QStringList() << "-c" << "cat /sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/current_now");
-    p.waitForFinished(-1);
+    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/capacity");
+    m_capacity = p_tmp.toFloat();
 
-    QString p_currentNow = p.readAllStandardOutput();
-    m_current = p_currentNow.toFloat() / 1e6;
-
-    p.start("sh", QStringList() << "-c" << "cat /sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/voltage_now");
-    p.waitForFinished(-1);
-
-    QString p_voltageNow = p.readAllStandardOutput();
-    m_voltage = p_voltageNow.toFloat() / 1e6;
-
-    p.start("sh", QStringList() << "-c" << "cat /sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/capacity");
-    p.waitForFinished(-1);
-
-    QString p_capacity = p.readAllStandardOutput();
-    m_capacity = p_capacity.toFloat();
-
-    p.start("sh", QStringList() << "-c" << "cat /sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/temp");
-    p.waitForFinished(-1);
-
-    QString p_temp = p.readAllStandardOutput();
-    m_temperature = p_temp.toFloat() / 10;
+    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/temp");
+    m_temperature = p_tmp.toFloat() / 10;
 
 
     emit dcinVoltageChanged();

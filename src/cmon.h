@@ -40,6 +40,7 @@ signals:
     void batteryTemperatureChanged();
 
 private:
+    QString readOneLineFromFile(QString name);
     float m_dcinvoltage;
     float m_usbinvoltage;
     float m_voltage;
