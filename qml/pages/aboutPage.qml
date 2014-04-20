@@ -1,3 +1,6 @@
+/*
+    Generic about page (C) 2014 Kimmo Lindholm
+*/
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0

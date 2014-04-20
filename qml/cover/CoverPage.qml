@@ -37,7 +37,7 @@ CoverBackground
     {
         id: label
         anchors.centerIn: parent
-        text: "Chargemon"
+        text: "Charge monitor"
     }
 
 }

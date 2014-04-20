@@ -47,9 +47,11 @@ Page
             {
                 text: "About"
                 onClicked: pageStack.push(Qt.resolvedUrl("aboutPage.qml"),
-                                          { "version": cmon.version, "year": "2014", "name": "Chargemon" } )
+                                          { "version": cmon.version, "year": "2014", "name": "Charge monitor" } )
             }
         }
+
+        Component.onCompleted: scrollToBottom()
 
         contentHeight: column.height
 
@@ -148,7 +150,7 @@ Page
         Timer
         {
             interval: 500
-            running: true
+            running: applicationActive && page.status === PageStatus.Active
             repeat: true
             triggeredOnStart: true
             onTriggered:
