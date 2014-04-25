@@ -31,7 +31,6 @@ OTHER_FILES += qml/chargemon.qml \
     qml/cover/CoverPage.qml \
     qml/pages/Chargemon.qml \
     rpm/chargemon.spec \
-    rpm/chargemon.yaml \
 	chargemon.png \
     chargemon.desktop \
     qml/pages/aboutPage.qml
