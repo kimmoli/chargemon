@@ -25,10 +25,9 @@ BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 BuildRequires:  desktop-file-utils
-BuildRequires:  git
 
 %description
-Short description of my SailfishOS Application
+Simple charge monitoring application
 
 
 %prep
@@ -41,7 +40,7 @@ Short description of my SailfishOS Application
 # >> build pre
 # << build pre
 
-%qtc_qmake5 
+%qtc_qmake5 SPECVERSION=%{version}
 
 %qtc_make %{?_smp_mflags}
 

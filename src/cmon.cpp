@@ -23,7 +23,7 @@ Cmon::~Cmon()
 /* Return git describe as string (see .pro file) */
 QString Cmon::readVersion()
 {
-    return GITHASH;
+    return APPVERSION;
 }
 
 /* Read first line of file with Qt functions */
