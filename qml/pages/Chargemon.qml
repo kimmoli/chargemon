@@ -137,7 +137,7 @@ Page
         Timer
         {
             interval: 500
-            running: applicationActive && page.status === PageStatus.Active
+            running: (applicationActive && page.status === PageStatus.Active) || writelog
             repeat: true
             triggeredOnStart: true
             onTriggered:
