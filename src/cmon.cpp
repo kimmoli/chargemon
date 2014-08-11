@@ -7,6 +7,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QStringList>
+#include <QStandardPaths>
+#include <QDateTime>
 
 #include "cmon.h"
 
@@ -14,6 +16,12 @@ Cmon::Cmon(QObject *parent) :
     QObject(parent)
 {
     emit versionChanged();
+
+    m_writeToFile = false;
+
+    m_logFilename = QString("%1/chargemonlog.txt")
+                    .arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+
 }
 
 Cmon::~Cmon()
@@ -76,6 +84,33 @@ void Cmon::update()
     emit batteryCurrentChanged();
     emit batteryCapacityChanged();
     emit batteryTemperatureChanged();
+
+    if (m_writeToFile)
+    {
+        QDate ssDate = QDate::currentDate();
+        QTime ssTime = QTime::currentTime();
+
+        QFile file(m_logFilename);
+        file.open(QIODevice::Append | QIODevice::Text);
+        QTextStream logfile(&file);
+
+        QString timestamp = QString("%1.%2.%3 %4:%5:%6.%7 ")
+                .arg((int) ssDate.day(),    2, 10, QLatin1Char('0'))
+                .arg((int) ssDate.month(),  2, 10, QLatin1Char('0'))
+                .arg((int) ssDate.year(),   4, 10, QLatin1Char('0'))
+                .arg((int) ssTime.hour(),   2, 10, QLatin1Char('0'))
+                .arg((int) ssTime.minute(), 2, 10, QLatin1Char('0'))
+                .arg((int) ssTime.second(), 2, 10, QLatin1Char('0'))
+                .arg((int) ssTime.msec(), 3, 10, QLatin1Char('0'));
+
+        logfile.setPadChar(' ');
+        logfile.setFieldWidth(12);
+
+        logfile << timestamp << readBatteryCapacity() << readBatteryTemperature() << readBatteryVoltage() << readBatteryCurrent() << \
+                   readDcinVoltage() << readUsbinVoltage() << "\n";
+
+        file.close();
+    }
 }
 
 
@@ -107,4 +142,10 @@ QString Cmon::readBatteryCapacity()
 QString Cmon::readBatteryTemperature()
 {
     return QString::number(m_temperature) + QString::fromUtf8("\u00B0C");
+}
+
+
+void Cmon::setWriteToFile(bool enable)
+{
+    m_writeToFile = enable;
 }

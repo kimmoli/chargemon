@@ -12,6 +12,8 @@ Page
 {
     id: page
 
+    property bool writelog : false
+
     SilicaFlickable
     {
         anchors.fill: parent
@@ -23,6 +25,16 @@ Page
                 text: "About"
                 onClicked: pageStack.push(Qt.resolvedUrl("aboutPage.qml"),
                                           { "version": cmon.version, "year": "2014", "name": "Charge monitor" } )
+            }
+
+            MenuItem
+            {
+                text: writelog ? "Stop logging" : "Start logging"
+                onClicked:
+                {
+                    writelog = !writelog
+                    cmon.setWriteToFile(writelog)
+                }
             }
         }
 

@@ -1,6 +1,7 @@
 #ifndef CMON_H
 #define CMON_H
 #include <QObject>
+#include <QTextStream>
 
 class Cmon : public QObject
 {
@@ -29,6 +30,8 @@ public:
 
     Q_INVOKABLE void update();
 
+    Q_INVOKABLE void setWriteToFile(bool enable);
+
 signals:
     void versionChanged();
 
@@ -47,6 +50,9 @@ private:
     float m_current;
     float m_capacity;
     float m_temperature;
+
+    bool m_writeToFile;
+    QString m_logFilename;
 
 };
 
