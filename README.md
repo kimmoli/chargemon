@@ -18,3 +18,5 @@ DC Input voltage
 USB Input voltage
 
 Updates automatically 2 times/sec
+
+* Now with option to log to file
