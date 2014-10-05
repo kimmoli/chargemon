@@ -12,8 +12,8 @@ Name:       harbour-chargemon
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 
 Summary:    Charge monitor
-Version:    0.2.1
-Release:    6
+Version:    0.2.3
+Release:    9
 Group:      Qt/Qt
 License:    LICENSE
 URL:        http://example.org/

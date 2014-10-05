@@ -25,5 +25,6 @@ OTHER_FILES += qml/chargemon.qml \
     rpm/chargemon.spec \
     harbour-chargemon.desktop \
     harbour-chargemon.png \
-    qml/pages/AboutPage.qml
+    qml/pages/AboutPage.qml \
+    qml/cover/charger.png
 
