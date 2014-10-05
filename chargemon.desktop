@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-X-Nemo-Application-Type=silica-qt5
-Name=Charge monitor
-Icon=chargemon
-Exec=chargemon
-

@@ -6,7 +6,7 @@
 #         - desktop icon filename must be changed
 #         - desktop filename must be changed
 #         - icon definition filename in desktop file must be changed
-TARGET = chargemon
+TARGET = harbour-chargemon
 
 CONFIG += sailfishapp
 
@@ -23,7 +23,7 @@ OTHER_FILES += qml/chargemon.qml \
     qml/cover/CoverPage.qml \
     qml/pages/Chargemon.qml \
     rpm/chargemon.spec \
-	chargemon.png \
-    chargemon.desktop \
-    qml/pages/aboutPage.qml
+    harbour-chargemon.desktop \
+    harbour-chargemon.png \
+    qml/pages/AboutPage.qml
 

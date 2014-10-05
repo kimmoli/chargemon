@@ -5,7 +5,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import chargemon.Cmon 1.0
 
 
 Page
@@ -23,8 +22,11 @@ Page
             MenuItem
             {
                 text: "About"
-                onClicked: pageStack.push(Qt.resolvedUrl("aboutPage.qml"),
-                                          { "version": cmon.version, "year": "2014", "name": "Charge monitor" } )
+                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"),
+                                          { "version": cmon.version,
+                                              "year": "2014",
+                                              "name": "Charge monitor",
+                                              "imagelocation": "/usr/share/icons/hicolor/86x86/apps/harbour-chargemon.png"} )
             }
 
             MenuItem
@@ -147,10 +149,6 @@ Page
         }
     }
 
-    Cmon
-    {
-        id: cmon
-    }
 }
 
 
