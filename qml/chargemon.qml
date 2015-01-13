@@ -14,7 +14,6 @@ ApplicationWindow
                                                                     "image://theme/icon-cover-play")
     property string coverActionRightIcon: writelog ? "" : "image://theme/icon-cover-refresh"
     property bool coverRefresh: false
-    property bool coverRefreshTemp: false
     property bool writelog : false
 
     onWritelogChanged:
@@ -22,7 +21,6 @@ ApplicationWindow
         if (writelog)
         {
             coverRefresh = false
-            coverRefreshTemp = false
         }
     }
 
@@ -58,7 +56,7 @@ ApplicationWindow
     {
         id: refreshTimer
         interval: 500
-        running: coverRefresh && !writelog
+        running: coverRefresh && !writelog && cmon.coverStatus === 2
         repeat: true
         onTriggered: cmon.update()
     }
@@ -66,19 +64,6 @@ ApplicationWindow
     Cmon
     {
         id: cmon
-        onCoverStatusChanged:
-        {
-            if (cmon.coverStatus !== 2 && coverRefresh)
-            {
-                coverRefreshTemp = coverRefresh
-                coverRefresh = false
-            }
-            else if (cmon.coverStatus === 2 && !writelog)
-            {
-                coverRefresh = coverRefreshTemp
-                coverRefreshTemp = false
-            }
-        }
     }
 
 }
