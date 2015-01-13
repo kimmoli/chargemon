@@ -11,6 +11,11 @@ Page
 {
     id: page
 
+    Messagebox
+    {
+        id: messagebox
+    }
+
     SilicaFlickable
     {
         anchors.fill: parent
@@ -36,6 +41,8 @@ Page
                 {
                     writelog = !writelog
                     cmon.setWriteToFile(writelog)
+                    if (writelog)
+                        messagebox.showMessage("Logging to:\n" + cmon.logFileName)
                 }
             }
         }

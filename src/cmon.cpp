@@ -22,6 +22,7 @@ Cmon::Cmon(QObject *parent) :
     m_logFilename = QString("%1/chargemonlog.txt")
                     .arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
 
+    emit logFileNameChanged();
 }
 
 Cmon::~Cmon()

@@ -14,6 +14,7 @@ class Cmon : public QObject
     Q_PROPERTY(QString batteryCurrent READ readBatteryCurrent NOTIFY batteryCurrentChanged())
     Q_PROPERTY(QString batteryCapacity READ readBatteryCapacity NOTIFY batteryCapacityChanged())
     Q_PROPERTY(QString batteryTemperature READ readBatteryTemperature NOTIFY batteryTemperatureChanged())
+    Q_PROPERTY(QString logFileName READ readLogFileName NOTIFY logFileNameChanged())
 
 public:
     explicit Cmon(QObject *parent = 0);
@@ -27,6 +28,7 @@ public:
     QString readBatteryCurrent();
     QString readBatteryCapacity();
     QString readBatteryTemperature();
+    QString readLogFileName() { return m_logFilename; }
 
     Q_INVOKABLE void update();
 
@@ -41,6 +43,7 @@ signals:
     void batteryCurrentChanged();
     void batteryCapacityChanged();
     void batteryTemperatureChanged();
+    void logFileNameChanged();
 
 private:
     QString readOneLineFromFile(QString name);
