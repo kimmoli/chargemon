@@ -26,5 +26,8 @@ OTHER_FILES += qml/chargemon.qml \
     harbour-chargemon.desktop \
     harbour-chargemon.png \
     qml/pages/AboutPage.qml \
-    qml/cover/charger.png
+    qml/cover/charger.png \
+    qml/cover/oneaction.qml \
+    qml/cover/twoactions.qml \
+    qml/pages/Messagebox.qml
 

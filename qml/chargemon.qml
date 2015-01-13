@@ -9,7 +9,36 @@ ApplicationWindow
 
     id: chargemonitor
 
-    property string coverActionLeftIcon: "image://theme/icon-cover-play"
+    property string coverActionLeftIcon: writelog ? "image://theme/icon-cover-cancel" :
+                                                    (coverRefresh ?"image://theme/icon-cover-pause" :
+                                                                    "image://theme/icon-cover-play")
+    property string coverActionRightIcon: writelog ? "" : "image://theme/icon-cover-refresh"
+    property bool coverRefresh: false
+    property bool coverRefreshTemp: false
+    property bool writelog : false
+
+    onWritelogChanged:
+    {
+        if (writelog)
+        {
+            coverRefresh = false
+            coverRefreshTemp = false
+        }
+    }
+
+    onApplicationActiveChanged:
+    {
+        if (applicationActive)
+        {
+            coverRefreshTemp = coverRefresh
+            coverRefresh = false
+        }
+        else if (!writelog)
+        {
+            coverRefresh = coverRefreshTemp
+            coverRefreshTemp = false
+        }
+    }
 
     initialPage: Qt.resolvedUrl("pages/Chargemon.qml")
 
@@ -17,21 +46,23 @@ ApplicationWindow
 
     function coverActionLeft()
     {
-        if (!refreshTimer.running)
+        if (writelog)
         {
-            coverActionLeftIcon = "image://theme/icon-cover-pause"
-            refreshTimer.start()
+            writelog = false
+        }
+        else if (!refreshTimer.running)
+        {
+            coverRefresh = true
         }
         else
         {
-            coverActionLeftIcon = "image://theme/icon-cover-play"
-            refreshTimer.stop()
+            coverRefresh = false
         }
     }
 
     function coverActionRight()
     {
-        if (!refreshTimer.running)
+        if (!refreshTimer.running && !writelog)
         {
             cmon.update()
         }
@@ -41,10 +72,9 @@ ApplicationWindow
     {
         id: refreshTimer
         interval: 500
-        running: false
+        running: coverRefresh && !writelog
         repeat: true
-        onTriggered:
-            cmon.update()
+        onTriggered: cmon.update()
     }
 
     Cmon

@@ -11,14 +11,14 @@ Page
 {
     id: page
 
-    property bool writelog : false
-
     SilicaFlickable
     {
         anchors.fill: parent
 
         PullDownMenu
         {
+            busy: writelog
+
             MenuItem
             {
                 text: "About"

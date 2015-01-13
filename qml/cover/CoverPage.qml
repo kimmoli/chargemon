@@ -4,6 +4,25 @@ import Sailfish.Silica 1.0
 
 CoverBackground
 {
+    id: coverBg
+
+    property var coverActions
+    property bool justOne: writelog || coverRefresh
+
+    onJustOneChanged:
+    {
+        changeCovers()
+    }
+
+    function changeCovers()
+    {
+        if (coverActions)
+           coverActions.destroy()
+        var coverComp = Qt.createComponent(Qt.resolvedUrl(justOne ? "oneaction.qml" : "twoactions.qml"))
+        coverActions = coverComp.createObject(coverBg)
+    }
+
+    Component.onCompleted: changeCovers()
 
     Image
     {
@@ -171,20 +190,32 @@ CoverBackground
             }
         }
     }
-
-    CoverActionList
+    Label
     {
-
-        CoverAction
+        id: loggingLabel
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 2
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: "Logging"
+        color: Theme.primaryColor
+        font.pixelSize: Theme.fontSizeSmall
+        font.bold: true
+        visible: writelog
+        Behavior on opacity
         {
-            iconSource: coverActionLeftIcon
-            onTriggered: coverActionLeft()
+            NumberAnimation
+            {
+                duration: 400
+                easing: Easing.InOutQuad
+            }
         }
 
-        CoverAction
+        Timer
         {
-            iconSource: "image://theme/icon-cover-refresh"
-            onTriggered: coverActionRight()
+            repeat: true
+            running: writelog
+            interval: 500
+            onTriggered: loggingLabel.opacity = loggingLabel.opacity == 1.0 ? 0.6 : 1.0
         }
     }
 }
