@@ -203,11 +203,7 @@ CoverBackground
         visible: writelog
         Behavior on opacity
         {
-            NumberAnimation
-            {
-                duration: 400
-                easing: Easing.InOutQuad
-            }
+            FadeAnimation {}
         }
 
         Timer
