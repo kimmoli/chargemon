@@ -26,20 +26,6 @@ ApplicationWindow
         }
     }
 
-    onApplicationActiveChanged:
-    {
-        if (applicationActive)
-        {
-            coverRefreshTemp = coverRefresh
-            coverRefresh = false
-        }
-        else if (!writelog)
-        {
-            coverRefresh = coverRefreshTemp
-            coverRefreshTemp = false
-        }
-    }
-
     initialPage: Qt.resolvedUrl("pages/Chargemon.qml")
 
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
@@ -80,6 +66,19 @@ ApplicationWindow
     Cmon
     {
         id: cmon
+        onCoverStatusChanged:
+        {
+            if (cmon.coverStatus !== 2 && coverRefresh)
+            {
+                coverRefreshTemp = coverRefresh
+                coverRefresh = false
+            }
+            else if (cmon.coverStatus === 2 && !writelog)
+            {
+                coverRefresh = coverRefreshTemp
+                coverRefreshTemp = false
+            }
+        }
     }
 
 }

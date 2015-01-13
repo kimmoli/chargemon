@@ -2,6 +2,8 @@
 #define CMON_H
 #include <QObject>
 #include <QTextStream>
+#include <QDBusMessage>
+
 
 class Cmon : public QObject
 {
@@ -15,6 +17,7 @@ class Cmon : public QObject
     Q_PROPERTY(QString batteryCapacity READ readBatteryCapacity NOTIFY batteryCapacityChanged())
     Q_PROPERTY(QString batteryTemperature READ readBatteryTemperature NOTIFY batteryTemperatureChanged())
     Q_PROPERTY(QString logFileName READ readLogFileName NOTIFY logFileNameChanged())
+    Q_PROPERTY(int coverStatus READ readCoverStatus NOTIFY coverStatusChanged())
 
 public:
     explicit Cmon(QObject *parent = 0);
@@ -29,10 +32,14 @@ public:
     QString readBatteryCapacity();
     QString readBatteryTemperature();
     QString readLogFileName() { return m_logFilename; }
+    int readCoverStatus() { return m_coverStatus; }
 
     Q_INVOKABLE void update();
 
     Q_INVOKABLE void setWriteToFile(bool enable);
+
+public slots:
+    void handleCoverstatus(const QDBusMessage& msg);
 
 signals:
     void versionChanged();
@@ -45,6 +52,8 @@ signals:
     void batteryTemperatureChanged();
     void logFileNameChanged();
 
+    void coverStatusChanged();
+
 private:
     QString readOneLineFromFile(QString name);
     float m_dcinvoltage;
@@ -56,7 +65,7 @@ private:
 
     bool m_writeToFile;
     QString m_logFilename;
-
+    int m_coverStatus;
 };
 
 

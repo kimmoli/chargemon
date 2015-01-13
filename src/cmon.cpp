@@ -9,8 +9,11 @@
 #include <QStringList>
 #include <QStandardPaths>
 #include <QDateTime>
+#include <QDBusConnection>
+#include <QDebug>
 
 #include "cmon.h"
+
 
 Cmon::Cmon(QObject *parent) :
     QObject(parent)
@@ -23,6 +26,12 @@ Cmon::Cmon(QObject *parent) :
                     .arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
 
     emit logFileNameChanged();
+
+    QDBusConnection::sessionBus().connect("", "/com/jolla/lipstick", "com.jolla.lipstick", "coverstatus",
+                          this, SLOT(handleCoverstatus(const QDBusMessage&)));
+
+    m_coverStatus = 0;
+    emit coverStatusChanged();
 }
 
 Cmon::~Cmon()
@@ -149,4 +158,12 @@ QString Cmon::readBatteryTemperature()
 void Cmon::setWriteToFile(bool enable)
 {
     m_writeToFile = enable;
+}
+
+
+void Cmon::handleCoverstatus(const QDBusMessage& msg)
+{
+    QList<QVariant> args = msg.arguments();
+    m_coverStatus = args.at(0).toInt();
+    emit coverStatusChanged();
 }

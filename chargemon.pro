@@ -9,6 +9,7 @@
 TARGET = harbour-chargemon
 
 CONFIG += sailfishapp
+QT += dbus
 
 DEFINES += "APPVERSION=\\\"$${SPECVERSION}\\\""
 
