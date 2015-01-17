@@ -152,8 +152,8 @@ void Cmon::updateInfoPage()
 
     /* contextproperties */
 
-    m_infoPage.insert("time_until_low", propertyTimeUntilLow->value().toString());
-    m_infoPage.insert("time_until_full", propertyTimeUntilFull->value().toString());
+    m_infoPage.insert("time_until_low", QDateTime::fromTime_t(propertyTimeUntilLow->value().toInt()).toUTC().toString("hh:mm:ss"));
+    m_infoPage.insert("time_until_full", QDateTime::fromTime_t(propertyTimeUntilFull->value().toInt()).toUTC().toString("hh:mm:ss"));
 
     emit infoPageChanged();
 }
