@@ -1,3 +1,7 @@
+/*
+ * Charge monitor (C) 2014-2015 Kimmo Lindholm
+ * LICENSE MIT
+ */
 #ifndef CMON_H
 #define CMON_H
 #include <QObject>

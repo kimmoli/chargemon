@@ -1,7 +1,7 @@
 /*
-    Generic about page (C) 2014 Kimmo Lindholm
-*/
-
+ * Charge monitor (C) 2014-2015 Kimmo Lindholm
+ * LICENSE MIT
+ */
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 

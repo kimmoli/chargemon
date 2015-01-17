@@ -1,7 +1,7 @@
 /*
-    Charge Monitor (C) 2014 Kimmo Lindholm
-*/
-
+ * Charge monitor (C) 2014-2015 Kimmo Lindholm
+ * LICENSE MIT
+ */
 #include <QCoreApplication>
 #include <QRegExp>
 #include <QFile>

@@ -1,4 +1,7 @@
-
+/*
+ * Charge monitor (C) 2014-2015 Kimmo Lindholm
+ * LICENSE MIT
+ */
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import harbour.chargemon 1.0

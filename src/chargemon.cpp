@@ -1,4 +1,7 @@
-
+/*
+ * Charge monitor (C) 2014-2015 Kimmo Lindholm
+ * LICENSE MIT
+ */
 #ifdef QT_QML_DEBUG
 #include <QtQuick>
 #endif
