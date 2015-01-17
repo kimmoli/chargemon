@@ -12,8 +12,8 @@ Name:       harbour-chargemon
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 
 Summary:    Charge monitor
-Version:    0.2.3
-Release:    9
+Version:    0.3.2
+Release:    11
 Group:      Qt/Qt
 License:    LICENSE
 URL:        http://example.org/
@@ -23,6 +23,7 @@ BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
+BuildRequires:  pkgconfig(contextkit-statefs)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 BuildRequires:  desktop-file-utils
 

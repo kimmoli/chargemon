@@ -7,7 +7,8 @@
 #include <QObject>
 #include <QTextStream>
 #include <QDBusMessage>
-
+#include <QVariantMap>
+#include <contextproperty.h>
 
 class Cmon : public QObject
 {
@@ -22,6 +23,7 @@ class Cmon : public QObject
     Q_PROPERTY(QString batteryTemperature READ readBatteryTemperature NOTIFY batteryTemperatureChanged())
     Q_PROPERTY(QString logFileName READ readLogFileName NOTIFY logFileNameChanged())
     Q_PROPERTY(int coverStatus READ readCoverStatus NOTIFY coverStatusChanged())
+    Q_PROPERTY(QVariantMap infoPage READ readInfoPage NOTIFY infoPageChanged())
 
 public:
     explicit Cmon(QObject *parent = 0);
@@ -37,8 +39,10 @@ public:
     QString readBatteryTemperature();
     QString readLogFileName() { return m_logFilename; }
     int readCoverStatus() { return m_coverStatus; }
+    QVariantMap readInfoPage() { return m_infoPage; }
 
     Q_INVOKABLE void update();
+    Q_INVOKABLE void updateInfoPage();
 
     Q_INVOKABLE void setWriteToFile(bool enable);
 
@@ -57,6 +61,7 @@ signals:
     void logFileNameChanged();
 
     void coverStatusChanged();
+    void infoPageChanged();
 
 private:
     QString readOneLineFromFile(QString name);
@@ -66,10 +71,14 @@ private:
     float m_current;
     float m_capacity;
     float m_temperature;
+    QVariantMap m_infoPage;
 
     bool m_writeToFile;
     QString m_logFilename;
     int m_coverStatus;
+
+    QScopedPointer<ContextProperty> propertyTimeUntilFull;
+    QScopedPointer<ContextProperty> propertyTimeUntilLow;
 };
 
 

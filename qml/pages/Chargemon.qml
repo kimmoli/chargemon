@@ -153,6 +153,15 @@ Page
                 cmon.update()
             }
         }
+
+        Timer
+        {
+            /* Is this the only way? */
+            interval: 500
+            running: true
+            repeat: false
+            onTriggered: pageStack.pushAttached(Qt.resolvedUrl("InfoPage.qml"))
+        }
     }
 
 }

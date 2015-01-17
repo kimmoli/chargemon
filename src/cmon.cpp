@@ -27,11 +27,18 @@ Cmon::Cmon(QObject *parent) :
 
     emit logFileNameChanged();
 
+    propertyTimeUntilFull.reset(new ContextProperty("Battery.TimeUntilFull", this));
+    propertyTimeUntilLow.reset(new ContextProperty("Battery.TimeUntilLow", this));
+
     QDBusConnection::sessionBus().connect("", "/com/jolla/lipstick", "com.jolla.lipstick", "coverstatus",
                           this, SLOT(handleCoverstatus(const QDBusMessage&)));
 
     m_coverStatus = 0;
     emit coverStatusChanged();
+
+    /* Get initial values */
+    update();
+    updateInfoPage();
 }
 
 Cmon::~Cmon()
@@ -123,6 +130,33 @@ void Cmon::update()
     }
 }
 
+void Cmon::updateInfoPage()
+{
+    /* sysfs */
+
+    QStringList lookFor;
+    lookFor << "battery/status";
+    lookFor << "battery/charge_type";
+    lookFor << "battery/health";
+    lookFor << "battery/technology";
+    lookFor << "usb/type";
+    lookFor << "usb/current_max";
+
+    m_infoPage.clear();
+
+    foreach (const QString &looking, lookFor)
+    {
+        QString fpath = QString("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/%1").arg(looking);
+        m_infoPage.insert(looking, readOneLineFromFile(fpath));
+    }
+
+    /* contextproperties */
+
+    m_infoPage.insert("time_until_low", propertyTimeUntilLow->value().toString());
+    m_infoPage.insert("time_until_full", propertyTimeUntilFull->value().toString());
+
+    emit infoPageChanged();
+}
 
 QString Cmon::readDcinVoltage()
 {
