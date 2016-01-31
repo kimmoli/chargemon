@@ -29,6 +29,7 @@ public:
     explicit Cmon(QObject *parent = 0);
     ~Cmon();
 
+    bool checkDevice();
     QString readVersion();
 
     QString readDcinVoltage();
@@ -63,6 +64,8 @@ signals:
     void coverStatusChanged();
     void infoPageChanged();
 
+    void thisDeviceIsNotSupported();
+
 private:
     QString readOneLineFromFile(QString name);
     float m_dcinvoltage;
@@ -79,6 +82,12 @@ private:
 
     QScopedPointer<ContextProperty> propertyTimeUntilFull;
     QScopedPointer<ContextProperty> propertyTimeUntilLow;
+
+    QStringList infoPageValues;
+    QStringList generalValues;
+
+    bool deviceDetected;
+    QString deviceName;
 };
 
 

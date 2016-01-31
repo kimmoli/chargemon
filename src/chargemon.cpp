@@ -19,11 +19,6 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setOrganizationDomain("KimmoLi");
-    QCoreApplication::setOrganizationName("KimmoLi");
-    QCoreApplication::setApplicationName("chargemon");
-    QCoreApplication::setApplicationVersion("0.1-1");
-
     qmlRegisterType<Cmon>("harbour.chargemon", 1, 0, "Cmon");
 
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));

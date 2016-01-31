@@ -12,11 +12,11 @@ Name:       harbour-chargemon
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 
 Summary:    Charge monitor
-Version:    0.3.2
-Release:    11
+Version:    0.4.devel
+Release:    1
 Group:      Qt/Qt
 License:    LICENSE
-URL:        http://example.org/
+URL:        https://github.com/kimmoli/chargemon
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   sailfishsilica-qt5 >= 0.10.9
 BuildRequires:  pkgconfig(Qt5Quick)

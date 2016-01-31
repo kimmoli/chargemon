@@ -10,11 +10,6 @@ Page
 {
     id: page
 
-    Messagebox
-    {
-        id: messagebox
-    }
-
     SilicaFlickable
     {
         anchors.fill: parent
@@ -116,10 +111,12 @@ Page
             SectionHeader
             {
                 text: "DC input voltage"
+                visible: cmon.dcinVoltage !== "N/A"
             }
 
             Label
             {
+                visible: cmon.dcinVoltage !== "N/A"
                 x: Theme.paddingLarge
                 text: cmon.dcinVoltage
                 color: Theme.primaryColor

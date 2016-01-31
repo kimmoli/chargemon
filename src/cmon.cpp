@@ -10,6 +10,7 @@
 #include <QStandardPaths>
 #include <QDateTime>
 #include <QDBusConnection>
+#include <QDBusInterface>
 #include <QDebug>
 
 #include "cmon.h"
@@ -19,6 +20,10 @@ Cmon::Cmon(QObject *parent) :
     QObject(parent)
 {
     emit versionChanged();
+
+    deviceDetected = checkDevice();
+    if (!deviceDetected)
+        emit thisDeviceIsNotSupported();
 
     m_writeToFile = false;
 
@@ -43,6 +48,86 @@ Cmon::Cmon(QObject *parent) :
 
 Cmon::~Cmon()
 {
+}
+
+bool Cmon::checkDevice()
+{
+    int res = false;
+
+    if (!QDBusConnection::systemBus().isConnected())
+    {
+        printf("Cannot connect to the D-Bus systemBus\n%s\n", qPrintable(QDBusConnection::systemBus().lastError().message()));
+        return false;
+    }
+
+
+    QDBusInterface ssuCall("org.nemo.ssu", "/org/nemo/ssu", "org.nemo.ssu", QDBusConnection::systemBus());
+    ssuCall.setTimeout(1000);
+
+    QList<QVariant> args;
+    args.append(2);
+
+    QDBusMessage ssuCallReply = ssuCall.callWithArgumentList(QDBus::Block, "displayName", args);
+
+    if (ssuCallReply.type() == QDBusMessage::ErrorMessage)
+    {
+        printf("Error: %s\n", qPrintable(ssuCallReply.errorMessage()));
+        return false;
+    }
+
+    QList<QVariant> outArgs = ssuCallReply.arguments();
+    if (outArgs.count() == 0)
+    {
+        printf("Reply is epmty\n");
+        return false;
+    }
+
+    deviceName = outArgs.at(0).toString();
+
+    printf("device name is %s\n", qPrintable(deviceName));
+
+    if (outArgs.at(0).toString() == "JP-1301") /* The one and only original Jolla phone */
+    {
+        generalValues.clear();
+        generalValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/dcin";
+        generalValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/usbin";
+        generalValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/current_now";
+        generalValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/capacity";
+        generalValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/temp";
+
+        infoPageValues.clear();
+        infoPageValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/status";
+        infoPageValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/health";
+        infoPageValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/technology";
+        infoPageValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/usb/type";
+        infoPageValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/usb/current_max";
+
+        res = true;
+    }
+    else if (outArgs.at(0).toString() == "onyx") /* OneplusX */
+    {
+        generalValues.clear();
+        generalValues << "";
+        generalValues << "/sys/devices/msm_dwc3/power_supply/usb/voltage_now";
+        generalValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/current_now";
+        generalValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/capacity";
+        generalValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/temp";
+
+        infoPageValues.clear();
+        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/status";
+        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/health";
+        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/technology";
+        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/qpnp-dc/type";
+        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/qpnp-dc/current_max";
+
+        res = true;
+    }
+
+    return res;
 }
 
 /* Return git describe as string (see .pro file) */
@@ -76,22 +161,35 @@ void Cmon::update()
 {
     QString p_tmp;
 
-    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/dcin");
-    m_dcinvoltage = p_tmp.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
+    if (!deviceDetected)
+        return;
 
-    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/usbin");
-    m_usbinvoltage = p_tmp.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
+    if (deviceName == "JP-1301")
+    {
+        p_tmp = readOneLineFromFile(generalValues.at(0));
+        m_dcinvoltage = p_tmp.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
+    }
+    else
+    {
+        m_dcinvoltage = 0;
+    }
 
-    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/current_now");
+    p_tmp = readOneLineFromFile(generalValues.at(1));
+    if (deviceName == "JP-1301")
+        m_usbinvoltage = p_tmp.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
+    else
+        m_usbinvoltage = p_tmp.toFloat() / 1e6;
+
+    p_tmp = readOneLineFromFile(generalValues.at(2));
     m_current = p_tmp.toFloat() / 1e6;
 
-    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/voltage_now");
+    p_tmp = readOneLineFromFile(generalValues.at(3));
     m_voltage = p_tmp.toFloat() / 1e6;
 
-    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/capacity");
+    p_tmp = readOneLineFromFile(generalValues.at(4));
     m_capacity = p_tmp.toFloat();
 
-    p_tmp = readOneLineFromFile("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/temp");
+    p_tmp = readOneLineFromFile(generalValues.at(5));
     m_temperature = p_tmp.toFloat() / 10;
 
 
@@ -132,22 +230,15 @@ void Cmon::update()
 
 void Cmon::updateInfoPage()
 {
-    /* sysfs */
-
-    QStringList lookFor;
-    lookFor << "battery/status";
-    lookFor << "battery/charge_type";
-    lookFor << "battery/health";
-    lookFor << "battery/technology";
-    lookFor << "usb/type";
-    lookFor << "usb/current_max";
+    if (!deviceDetected)
+        return;
 
     m_infoPage.clear();
 
-    foreach (const QString &looking, lookFor)
+    foreach (const QString &looking, infoPageValues)
     {
-        QString fpath = QString("/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/%1").arg(looking);
-        m_infoPage.insert(looking, readOneLineFromFile(fpath));
+        QString fpath = looking;
+        m_infoPage.insert(looking.split("/").last(), readOneLineFromFile(fpath));
     }
 
     /* contextproperties */
@@ -160,7 +251,10 @@ void Cmon::updateInfoPage()
 
 QString Cmon::readDcinVoltage()
 {
-    return QString::number(m_dcinvoltage) + " V";
+    if (deviceName == "JP-1301")
+        return QString::number(m_dcinvoltage) + " V";
+    else
+        return QString("N/A");
 }
 
 QString Cmon::readUsbinVoltage()

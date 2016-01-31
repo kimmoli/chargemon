@@ -152,6 +152,7 @@ CoverBackground
         Row
         {
             width: parent.width
+            visible: cmon.dcinVoltage !== "N/A"
 
             Label
             {

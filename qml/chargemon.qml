@@ -5,7 +5,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import harbour.chargemon 1.0
-
+import "pages"
 
 ApplicationWindow
 {
@@ -55,6 +55,11 @@ ApplicationWindow
         }
     }
 
+    Messagebox
+    {
+        id: messagebox
+    }
+
     Timer
     {
         id: refreshTimer
@@ -67,6 +72,7 @@ ApplicationWindow
     Cmon
     {
         id: cmon
+        onThisDeviceIsNotSupported: messagebox.showMessage("This device is not supported!")
     }
 
 }

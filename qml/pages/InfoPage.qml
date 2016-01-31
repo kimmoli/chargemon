@@ -68,12 +68,12 @@ Page
         id: infolist
         ListElement { title: "Time until low"; param: "time_until_low" }
         ListElement { title: "Time until full"; param: "time_until_full" }
-        ListElement { title: "Status"; param: "battery/status" }
-        ListElement { title: "Charge type"; param: "battery/charge_type" }
-        ListElement { title: "USB Connection type"; param: "usb/type" }
-        ListElement { title: "USB Max charging current"; param: "usb/current_max" }
-        ListElement { title: "Health"; param: "battery/health" }
-        ListElement { title: "Technology"; param: "battery/technology" }
+        ListElement { title: "Status"; param: "status" }
+        ListElement { title: "Charge type"; param: "charge_type" }
+        ListElement { title: "USB Connection type"; param: "type" }
+        ListElement { title: "USB Max charging current"; param: "current_max" }
+        ListElement { title: "Health"; param: "health" }
+        ListElement { title: "Technology"; param: "technology" }
     }
 
 }
