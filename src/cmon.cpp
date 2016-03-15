@@ -125,8 +125,29 @@ bool Cmon::checkDevice()
         infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/qpnp-dc/current_max";
 
         res = true;
+    
+    
     }
+    else if (outArgs.at(0).toString() == "fp2-sibon")
+    {
+        generalValues.clear();
+        generalValues << "";
+        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/subsystem/usb/voltage_now";
+        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/current_now";
+        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/capacity";
+        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/temp";
 
+        infoPageValues.clear();
+        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/status";
+        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/health";
+        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/technology";
+        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/qpnp-dc/type";
+        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/qpnp-dc/current_max";
+
+        res = true;
+    }
     return res;
 }
 
