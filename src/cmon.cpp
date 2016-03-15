@@ -125,8 +125,6 @@ bool Cmon::checkDevice()
         infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/qpnp-dc/current_max";
 
         res = true;
-    
-    
     }
     else if (outArgs.at(0).toString() == "fp2-sibon")
     {
