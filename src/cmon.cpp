@@ -54,6 +54,14 @@ bool Cmon::checkDevice()
 {
     int res = false;
 
+    infoPageTypes.clear();
+    infoPageTypes << "status";
+    infoPageTypes << "charge_type";
+    infoPageTypes << "health";
+    infoPageTypes << "technology";
+    infoPageTypes << "type";
+    infoPageTypes << "current_max";
+
     if (!QDBusConnection::systemBus().isConnected())
     {
         printf("Cannot connect to the D-Bus systemBus\n%s\n", qPrintable(QDBusConnection::systemBus().lastError().message()));
@@ -146,6 +154,26 @@ bool Cmon::checkDevice()
 
         res = true;
     }
+    else if (outArgs.at(0).toString() == "JP-1601") /* Jolla C */
+    {
+        generalValues.clear();
+        generalValues << "";
+        generalValues << "/sys/devices/soc.0/qpnp-vadc-f4bc9a00/usb_in";
+        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/current_now";
+        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/capacity";
+        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/temp";
+
+        infoPageValues.clear();
+        infoPageValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/status";
+        infoPageValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/health";
+        infoPageValues << "/sys/devices/soc.0/qpnp-vm-bms-f4bca600/power_supply/bms/battery_type";
+        infoPageValues << "/sys/devices/soc.0/78d9000.usb/power_supply/usb/type";
+        infoPageValues << "/sys/devices/soc.0/78d9000.usb/power_supply/usb/current_max";
+
+        res = true;
+    }
     return res;
 }
 
@@ -194,7 +222,7 @@ void Cmon::update()
     }
 
     p_tmp = readOneLineFromFile(generalValues.at(1));
-    if (deviceName == "JP-1301")
+    if (deviceName == "JP-1301" || deviceName == "JP-1601")
         m_usbinvoltage = p_tmp.split(QRegExp("\\W+"), QString::SkipEmptyParts).at(1).toFloat() / 1e6;
     else
         m_usbinvoltage = p_tmp.toFloat() / 1e6;
@@ -254,10 +282,18 @@ void Cmon::updateInfoPage()
 
     m_infoPage.clear();
 
-    foreach (const QString &looking, infoPageValues)
+    int i;
+    for (i=0 ; i<infoPageTypes.count() && i<infoPageValues.count() ; i++)
     {
-        QString fpath = looking;
-        m_infoPage.insert(looking.split("/").last(), readOneLineFromFile(fpath));
+        if (!infoPageValues.at(i).isEmpty())
+        {
+            QString fpath = infoPageValues.at(i);
+            m_infoPage.insert(infoPageTypes.at(i), readOneLineFromFile(fpath));
+        }
+        else
+        {
+            m_infoPage.insert(infoPageTypes.at(i), "None");
+        }
     }
 
     /* contextproperties */

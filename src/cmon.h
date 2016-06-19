@@ -85,6 +85,7 @@ private:
 
     QStringList infoPageValues;
     QStringList generalValues;
+    QStringList infoPageTypes;
 
     bool deviceDetected;
     QString deviceName;
