@@ -73,6 +73,7 @@ Page
         ListElement { title: "USB Connection type"; param: "type" }
         ListElement { title: "USB Max charging current"; param: "current_max" }
         ListElement { title: "Health"; param: "health" }
+        ListElement { title: "Capacity left"; param: "capacity_left" }
         ListElement { title: "Technology"; param: "technology" }
     }
 
