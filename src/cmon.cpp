@@ -112,6 +112,10 @@ bool Cmon::checkDevice()
         infoPageValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/usb/type";
         infoPageValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/usb/current_max";
 
+        infoPageRawValues.clear();
+        infoPageRawValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/charge_full";
+        infoPageRawValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8921-charger/power_supply/battery/charge_full_design";
+
         res = true;
     }
     else if (outArgs.at(0).toString() == "onyx") /* OneplusX */
@@ -294,6 +298,17 @@ void Cmon::updateInfoPage()
         {
             m_infoPage.insert(infoPageTypes.at(i), "None");
         }
+    }
+
+    if (!infoPageRawValues.at(0).isEmpty() && !infoPageRawValues.at(1).isEmpty())
+    {
+        uint energy_full = readOneLineFromFile(infoPageRawValues.at(0)).toInt();
+        uint energy_full_design = readOneLineFromFile(infoPageRawValues.at(1)).toInt();
+        m_infoPage.insert("capacity_left", QString::number(100*energy_full/energy_full_design) + "%");
+    }
+    else
+    {
+        m_infoPage.insert("capacity_left", "None");
     }
 
     /* contextproperties */
