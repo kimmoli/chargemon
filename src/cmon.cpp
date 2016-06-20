@@ -136,6 +136,10 @@ bool Cmon::checkDevice()
         infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/qpnp-dc/type";
         infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/qpnp-dc/current_max";
 
+        infoPageRawValues.clear();
+        infoPageRawValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/charge_full";
+        infoPageRawValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/charge_full_design";
+
         res = true;
     }
     else if (outArgs.at(0).toString() == "fp2-sibon")
@@ -156,6 +160,10 @@ bool Cmon::checkDevice()
         infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/qpnp-dc/type";
         infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/qpnp-dc/current_max";
 
+        infoPageRawValues.clear();
+        infoPageRawValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/charge_full";
+        infoPageRawValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/charge_full_design";
+
         res = true;
     }
     else if (outArgs.at(0).toString() == "JP-1601") /* Jolla C */
@@ -175,6 +183,9 @@ bool Cmon::checkDevice()
         infoPageValues << "/sys/devices/soc.0/qpnp-vm-bms-f4bca600/power_supply/bms/battery_type";
         infoPageValues << "/sys/devices/soc.0/78d9000.usb/power_supply/usb/type";
         infoPageValues << "/sys/devices/soc.0/78d9000.usb/power_supply/usb/current_max";
+
+        infoPageRawValues.clear();
+        /* charge_full, charge_full_design not available on Jolla C */
 
         res = true;
     }
@@ -300,15 +311,23 @@ void Cmon::updateInfoPage()
         }
     }
 
-    if (!infoPageRawValues.at(0).isEmpty() && !infoPageRawValues.at(1).isEmpty())
+    if (infoPageRawValues.count() >= 2)
     {
         uint energy_full = readOneLineFromFile(infoPageRawValues.at(0)).toInt();
         uint energy_full_design = readOneLineFromFile(infoPageRawValues.at(1)).toInt();
-        m_infoPage.insert("capacity_left", QString::number(100*energy_full/energy_full_design) + "%");
+
+        if (energy_full_design > 0)
+        {
+            m_infoPage.insert("capacity_left", QString::number(100*energy_full/energy_full_design) + "%");
+        }
+        else
+        {
+            m_infoPage.insert("capacity_left", "Unknown");
+        }
     }
     else
     {
-        m_infoPage.insert("capacity_left", "None");
+        m_infoPage.insert("capacity_left", "Unknown");
     }
 
     /* contextproperties */
