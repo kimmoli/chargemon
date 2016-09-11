@@ -166,7 +166,9 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if (outArgs.at(0).toString() == "JP-1601") /* Jolla C */
+    else if ((outArgs.at(0).toString() == "JP-1601") || /* Jolla C */
+             (outArgs.at(0).toString() == "Aqua Fish") || /* Aquafish */
+             (outArgs.at(0).toString() == "L500D"))  /* This is also Aquafish */
     {
         generalValues.clear();
         generalValues << "";
