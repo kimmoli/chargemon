@@ -1,5 +1,5 @@
 /*
- * Charge monitor (C) 2014-2015 Kimmo Lindholm
+ * Charge monitor (C) 2014-2017 Kimmo Lindholm
  * LICENSE MIT
  */
 import QtQuick 2.0
@@ -45,15 +45,15 @@ Page
             {
                 visible: imagelocation.length > 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                height: 120
-                width: 120
+                height: Theme.iconSizeLauncher
+                width: Theme.iconSizeLauncher
                 color: "transparent"
 
                 Image
                 {
                     visible: imagelocation.length > 0
                     source: imagelocation
-                    anchors.centerIn: parent
+                    anchors.fill: parent
                 }
             }
 			

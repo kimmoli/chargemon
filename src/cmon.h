@@ -1,5 +1,5 @@
 /*
- * Charge monitor (C) 2014-2015 Kimmo Lindholm
+ * Charge monitor (C) 2014-2017 Kimmo Lindholm
  * LICENSE MIT
  */
 #ifndef CMON_H
@@ -67,6 +67,7 @@ signals:
     void thisDeviceIsNotSupported();
 
 private:
+    void glob(QStringList *files);
     QString readOneLineFromFile(QString name);
     float m_dcinvoltage;
     float m_usbinvoltage;

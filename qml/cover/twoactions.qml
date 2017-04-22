@@ -1,5 +1,5 @@
 /*
- * Charge monitor (C) 2014-2015 Kimmo Lindholm
+ * Charge monitor (C) 2014-2017 Kimmo Lindholm
  * LICENSE MIT
  */
 import QtQuick 2.0

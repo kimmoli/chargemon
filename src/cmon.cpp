@@ -1,10 +1,11 @@
 /*
- * Charge monitor (C) 2014-2015 Kimmo Lindholm
+ * Charge monitor (C) 2014-2017 Kimmo Lindholm
  * LICENSE MIT
  */
 #include <QCoreApplication>
 #include <QRegExp>
 #include <QFile>
+#include <QDir>
 #include <QTextStream>
 #include <QStringList>
 #include <QStandardPaths>
@@ -123,22 +124,22 @@ bool Cmon::checkDevice()
         generalValues.clear();
         generalValues << "";
         generalValues << "/sys/devices/msm_dwc3/power_supply/usb/voltage_now";
-        generalValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/current_now";
-        generalValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/voltage_now";
-        generalValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/capacity";
-        generalValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/temp";
+        generalValues << "/sys/devices/qpnp-charger-*/power_supply/battery/current_now";
+        generalValues << "/sys/devices/qpnp-charger-*/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/qpnp-charger-*/power_supply/battery/capacity";
+        generalValues << "/sys/devices/qpnp-charger-*/power_supply/battery/temp";
 
         infoPageValues.clear();
-        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/status";
-        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/charge_type";
-        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/health";
-        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/technology";
-        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/qpnp-dc/type";
-        infoPageValues << "/sys/devices/qpnp-charger-f6169000/power_supply/qpnp-dc/current_max";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/battery/status";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/battery/health";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/battery/technology";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/qpnp-dc/type";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/qpnp-dc/current_max";
 
         infoPageRawValues.clear();
-        infoPageRawValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/charge_full";
-        infoPageRawValues << "/sys/devices/qpnp-charger-f6169000/power_supply/battery/charge_full_design";
+        infoPageRawValues << "/sys/devices/qpnp-charger-*/power_supply/battery/charge_full";
+        infoPageRawValues << "/sys/devices/qpnp-charger-*/power_supply/battery/charge_full_design";
 
         res = true;
     }
@@ -146,23 +147,23 @@ bool Cmon::checkDevice()
     {
         generalValues.clear();
         generalValues << "";
-        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/subsystem/usb/voltage_now";
-        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/current_now";
-        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/voltage_now";
-        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/capacity";
-        generalValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/temp";
+        generalValues << "/sys/devices/qpnp-charger-*/power_supply/battery/subsystem/usb/voltage_now";
+        generalValues << "/sys/devices/qpnp-charger-*/power_supply/battery/current_now";
+        generalValues << "/sys/devices/qpnp-charger-*/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/qpnp-charger-*/power_supply/battery/capacity";
+        generalValues << "/sys/devices/qpnp-charger-*/power_supply/battery/temp";
 
         infoPageValues.clear();
-        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/status";
-        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/charge_type";
-        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/health";
-        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/technology";
-        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/qpnp-dc/type";
-        infoPageValues << "/sys/devices/qpnp-charger-f6274800/power_supply/qpnp-dc/current_max";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/battery/status";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/battery/health";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/battery/technology";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/qpnp-dc/type";
+        infoPageValues << "/sys/devices/qpnp-charger-*/power_supply/qpnp-dc/current_max";
 
         infoPageRawValues.clear();
-        infoPageRawValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/charge_full";
-        infoPageRawValues << "/sys/devices/qpnp-charger-f6274800/power_supply/battery/charge_full_design";
+        infoPageRawValues << "/sys/devices/qpnp-charger-*/power_supply/battery/charge_full";
+        infoPageRawValues << "/sys/devices/qpnp-charger-*/power_supply/battery/charge_full_design";
 
         res = true;
     }
@@ -172,25 +173,30 @@ bool Cmon::checkDevice()
     {
         generalValues.clear();
         generalValues << "";
-        generalValues << "/sys/devices/soc.0/qpnp-vadc-f4bc9a00/usb_in";
-        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/current_now";
-        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/voltage_now";
-        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/capacity";
-        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/temp";
+        generalValues << "/sys/devices/soc.0/qpnp-vadc-*/usb_in";
+        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-*/power_supply/battery/current_now";
+        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-*/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-*/power_supply/battery/capacity";
+        generalValues << "/sys/devices/soc.0/qpnp-linear-charger-*/power_supply/battery/temp";
 
         infoPageValues.clear();
-        infoPageValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/status";
-        infoPageValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/soc.0/qpnp-linear-charger-*/power_supply/battery/status";
+        infoPageValues << "/sys/devices/soc.0/qpnp-linear-charger-*/power_supply/battery/charge_type";
         infoPageValues << "/sys/devices/soc.0/qpnp-linear-charger-f4bca200/power_supply/battery/health";
-        infoPageValues << "/sys/devices/soc.0/qpnp-vm-bms-f4bca600/power_supply/bms/battery_type";
-        infoPageValues << "/sys/devices/soc.0/78d9000.usb/power_supply/usb/type";
-        infoPageValues << "/sys/devices/soc.0/78d9000.usb/power_supply/usb/current_max";
+        infoPageValues << "/sys/devices/soc.0/qpnp-vm-bms-*/power_supply/bms/battery_type";
+        infoPageValues << "/sys/devices/soc.0/*.usb/power_supply/usb/type";
+        infoPageValues << "/sys/devices/soc.0/*.usb/power_supply/usb/current_max";
 
         infoPageRawValues.clear();
         /* charge_full, charge_full_design not available on Jolla C */
 
         res = true;
     }
+
+    glob(&generalValues);
+    glob(&infoPageValues);
+    glob(&infoPageRawValues);
+
     return res;
 }
 
@@ -385,4 +391,37 @@ void Cmon::handleCoverstatus(const QDBusMessage& msg)
     QList<QVariant> args = msg.arguments();
     m_coverStatus = args.at(0).toInt();
     emit coverStatusChanged();
+}
+
+void Cmon::glob(QStringList *files)
+{
+    /* If the file paths contains wildcards, try to resolve them */
+    int i,j;
+
+    for (i=0; i < files->size(); i++)
+    {
+        if (files->at(i).contains("*"))
+        {
+            QStringList s = files->at(i).split("/");
+
+            for (j=0; j<s.size(); j++)
+            {
+                if (s.at(j).contains("*"))
+                {
+                    QStringList filters;
+                    filters << s.at(j);
+
+                    QDir dir(QStringList(s.mid(0,j)).join("/"));
+
+                    QStringList dirs = dir.entryList(filters, QDir::Dirs);
+
+                    if (dirs.size() > 0)
+                    {
+                        s.replace(j, dirs.at(0));
+                        files->replace(i, s.join("/"));
+                    }
+                }
+            }
+        }
+    }
 }

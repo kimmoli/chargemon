@@ -1,6 +1,6 @@
 # 
 # spec file for harbour-chargemon, Charge monitor
-# (C) 2014-2015 Kimmo Lindholm
+# (C) 2014-2017 Kimmo Lindholm
 # 
 
 Name:       harbour-chargemon
@@ -53,11 +53,7 @@ desktop-file-install --delete-original       \
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}
-%{_datadir}/%{name}/qml
+%attr(755,root,root) %{_bindir}/%{name}
+%{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/86x86/apps/%{name}.png
-/usr/bin
-/usr/share/%{name}
-/usr/share/applications
-/usr/share/icons/hicolor/86x86/apps
+%{_datadir}/icons/hicolor/*/apps/%{name}.png
