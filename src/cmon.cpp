@@ -216,6 +216,30 @@ bool Cmon::checkDevice()
 
         res = true;
     }
+    else if (outArgs.at(0).toString() == "f5321")  /* Sony Xperia X Compact */
+    {
+        generalValues.clear();
+        generalValues << "";
+        generalValues << "/sys/devices/soc.0/*.usb/power_supply/usb/voltage_now";
+        generalValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/current_now";
+        generalValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/capacity";
+        generalValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/temp";
+
+        infoPageValues.clear();
+        infoPageValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/status";
+        infoPageValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/health";
+        infoPageValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/technology";
+        infoPageValues << "/sys/devices/soc.0/*.usb/power_supply/usb/type";
+        infoPageValues << "/sys/devices/soc.0/*.usb/power_supply/usb/current_max";
+
+        infoPageRawValues.clear();
+        infoPageRawValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/charge_full";
+        infoPageRawValues << "/sys/devices/soc.0/*-qcom,qpnp-smbcharger/power_supply/battery/charge_full_design";
+
+        res = true;
+    }
 
     glob(&generalValues);
     glob(&infoPageValues);
