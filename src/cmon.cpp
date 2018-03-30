@@ -119,6 +119,30 @@ bool Cmon::checkDevice()
 
         res = true;
     }
+    else if (outArgs.at(0).toString() == "JT-1501") /* The one and only original Jolla tablet */
+    {
+        generalValues.clear();
+        generalValues << "";
+        generalValues << ""; /* No reliable USB voltage */
+        generalValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_battery/power_supply/dollar_cove_battery/current_now";
+        generalValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_battery/power_supply/dollar_cove_battery/voltage_now";
+        generalValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_battery/power_supply/dollar_cove_battery/capacity";
+        generalValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_battery/power_supply/dollar_cove_battery/temp";
+
+        infoPageValues.clear();
+        infoPageValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_battery/power_supply/dollar_cove_battery/status";
+        infoPageValues << "";
+        infoPageValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_battery/power_supply/dollar_cove_battery/health";
+        infoPageValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_battery/power_supply/dollar_cove_battery/technology";
+        infoPageValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_charger/power_supply/dollar_cove_charger/type";
+        infoPageValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_charger/power_supply/dollar_cove_charger/max_charge_current";
+
+        infoPageRawValues.clear();
+        infoPageRawValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_battery/power_supply/dollar_cove_battery/charge_full";
+        infoPageRawValues << "/sys/devices/platform/80860F41:04/i2c-5/5-0034/dollar_cove_battery/power_supply/dollar_cove_battery/charge_full_design";
+
+        res = true;
+    }
     else if (outArgs.at(0).toString() == "onyx") /* OneplusX */
     {
         generalValues.clear();
@@ -356,7 +380,10 @@ QString Cmon::readDcinVoltage()
 
 QString Cmon::readUsbinVoltage()
 {
-    return QString::number(m_usbinvoltage) + " V";
+    if (deviceName == "JT-1501")
+        return QString("N/A");
+    else
+        return QString::number(m_usbinvoltage) + " V";
 }
 
 QString Cmon::readBatteryVoltage()
