@@ -216,7 +216,9 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if (outArgs.at(0).toString() == "f5321")  /* Sony Xperia X Compact */
+    else if (outArgs.at(0).toString() == "f5121" || /* Sony Xperia X */
+             outArgs.at(0).toString() == "f5122" || /* Sony Xperia X dual SIM */
+             outArgs.at(0).toString() == "f5321")  /* Sony Xperia X Compact */
     {
         generalValues.clear();
         generalValues << "";
