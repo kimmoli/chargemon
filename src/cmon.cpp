@@ -242,6 +242,30 @@ bool Cmon::checkDevice()
 
         res = true;
     }
+	else if (outArgs.at(0).toString() == "geminipda") /* Planet computers Gemini PDA */
+    {
+        generalValues.clear();
+        generalValues << "";
+        generalValues << "/sys/devices/platform/battery/power_supply/battery/ChargerVoltage";
+        generalValues << "/sys/devices/platform/battery_meter/FG_Current";
+        generalValues << "/sys/devices/platform/battery/power_supply/battery/batt_vol";
+        generalValues << "/sys/devices/platform/battery/power_supply/battery/capacity";
+        generalValues << "/sys/devices/platform/battery/power_supply/battery/batt_temp";
+
+        infoPageValues.clear();
+        infoPageValues << "/sys/devices/platform/battery/power_supply/battery/status";
+        infoPageValues << "/sys/devices/platform/battery/Charger_Type";
+        infoPageValues << "/sys/devices/platform/battery/power_supply/battery/health";
+        infoPageValues << "/sys/devices/platform/battery/power_supply/battery/technology";
+        infoPageValues << ""; /* Not available */
+        infoPageValues << ""; /* Not available */
+
+        infoPageRawValues.clear();
+		/* Not available */
+
+        res = true;
+    }
+
 
     glob(&generalValues);
     glob(&infoPageValues);
@@ -312,6 +336,12 @@ void Cmon::update()
     p_tmp = readOneLineFromFile(generalValues.at(5));
     m_temperature = p_tmp.toFloat() / 10;
 
+	if (deviceName == "geminipda")
+	{
+		m_voltage *= 1000;
+		m_usbinvoltage *= 1000;
+		m_current *= 100;
+	}
 
     emit dcinVoltageChanged();
     emit usbinVoltageChanged();
@@ -368,6 +398,24 @@ void Cmon::updateInfoPage()
             m_infoPage.insert(infoPageTypes.at(i), "None");
         }
     }
+
+	bool ok;
+	int charge_type = m_infoPage.value("charge_type").toString().toInt(&ok);
+
+	if (ok && charge_type < 8)
+	{
+		switch (charge_type)
+		{
+			case 1: m_infoPage.insert("charge_type", "Standard host"); break;
+			case 2: m_infoPage.insert("charge_type", "Charging host"); break;
+			case 3: m_infoPage.insert("charge_type", "Standard charger"); break;
+			case 4: m_infoPage.insert("charge_type", "Dedicated charger"); break;
+			case 5: m_infoPage.insert("charge_type", "Non standard charger"); break;
+			case 6: m_infoPage.insert("charge_type", "Non standard charger"); break;
+			case 7: m_infoPage.insert("charge_type", "OTG"); break;
+			default: m_infoPage.insert("charge_type", "Unknown charger"); break;
+		}
+	}
 
     if (infoPageRawValues.count() >= 2)
     {
