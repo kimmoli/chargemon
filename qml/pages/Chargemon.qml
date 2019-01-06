@@ -1,5 +1,5 @@
 /*
- * Charge monitor (C) 2014-2017 Kimmo Lindholm
+ * Charge monitor (C) 2014-2019 Kimmo Lindholm
  * LICENSE MIT
  */
 import QtQuick 2.0
@@ -23,7 +23,7 @@ Page
                 text: "About"
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"),
                                           { "version": cmon.version,
-                                              "year": "2014-2017",
+                                              "year": "2014-2019",
                                               "name": "Charge monitor",
                                               "imagelocation": "/usr/share/icons/hicolor/86x86/apps/harbour-chargemon.png"} )
             }

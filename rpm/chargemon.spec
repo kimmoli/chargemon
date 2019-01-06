@@ -1,6 +1,6 @@
 # 
 # spec file for harbour-chargemon, Charge monitor
-# (C) 2014-2017 Kimmo Lindholm
+# (C) 2014-2019 Kimmo Lindholm
 # 
 
 Name:       harbour-chargemon

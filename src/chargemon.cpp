@@ -1,5 +1,5 @@
 /*
- * Charge monitor (C) 2014-2017 Kimmo Lindholm
+ * Charge monitor (C) 2014-2019 Kimmo Lindholm
  * LICENSE MIT
  */
 #ifdef QT_QML_DEBUG

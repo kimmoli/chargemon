@@ -1,7 +1,7 @@
 #
 # QtCreator project for harbour-chargemon, Charge Monitor
 #
-# (C) 2014-2017 Kimmo Lindholm, LICENSE MIT
+# (C) 2014-2019 Kimmo Lindholm, LICENSE MIT
 #
 TARGET = harbour-chargemon
 
