@@ -95,7 +95,7 @@ bool Cmon::checkDevice()
 
     printf("device name is %s\n", qPrintable(deviceName));
 
-    if (outArgs.at(0).toString() == "JP-1301") /* The one and only original Jolla phone */
+    if (deviceName == "JP-1301") /* The one and only original Jolla phone */
     {
         generalValues.clear();
         generalValues << "/sys/devices/platform/msm_ssbi.0/pm8038-core/pm8xxx-adc/dcin";
@@ -119,7 +119,7 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if (outArgs.at(0).toString() == "JT-1501") /* The one and only original Jolla tablet */
+    else if (deviceName == "JT-1501") /* The one and only original Jolla tablet */
     {
         generalValues.clear();
         generalValues << "";
@@ -143,7 +143,7 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if (outArgs.at(0).toString() == "onyx") /* OneplusX */
+    else if (deviceName == "onyx") /* OneplusX */
     {
         generalValues.clear();
         generalValues << "";
@@ -167,7 +167,7 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if (outArgs.at(0).toString() == "fp2-sibon")
+    else if (deviceName == "fp2-sibon")
     {
         generalValues.clear();
         generalValues << "";
@@ -191,9 +191,9 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if ((outArgs.at(0).toString() == "JP-1601") || /* Jolla C */
-             (outArgs.at(0).toString() == "Aqua Fish") || /* Aquafish */
-             (outArgs.at(0).toString() == "L500D"))  /* This is also Aquafish */
+    else if ((deviceName == "JP-1601") || /* Jolla C */
+             (deviceName == "Aqua Fish") || /* Aquafish */
+             (deviceName == "L500D"))  /* This is also Aquafish */
     {
         generalValues.clear();
         generalValues << "";
@@ -216,9 +216,9 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if (outArgs.at(0).toString() == "f5121" || /* Sony Xperia X */
-             outArgs.at(0).toString() == "f5122" || /* Sony Xperia X dual SIM */
-             outArgs.at(0).toString() == "f5321")  /* Sony Xperia X Compact */
+    else if (deviceName == "f5121" || /* Sony Xperia X */
+             deviceName == "f5122" || /* Sony Xperia X dual SIM */
+             deviceName == "f5321")  /* Sony Xperia X Compact */
     {
         generalValues.clear();
         generalValues << "";
@@ -242,7 +242,7 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-	else if (outArgs.at(0).toString() == "geminipda") /* Planet computers Gemini PDA */
+	else if (deviceName == "geminipda") /* Planet computers Gemini PDA */
     {
         generalValues.clear();
         generalValues << "";
@@ -265,7 +265,7 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if (outArgs.at(0).toString() == "vince" )  /* Xiaomi Redmi Note 5 / 5 Plus */
+    else if (deviceName == "vince" )  /* Xiaomi Redmi Note 5 / 5 Plus */
     {
         generalValues.clear();
         generalValues << "";
@@ -289,17 +289,17 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if (outArgs.at(0).toString() == "h3113" || /* Sony Xperia XA2 Europe */
-             outArgs.at(0).toString() == "h3123" || /* Sony Xperia XA2 US/Canada Version  */
-             outArgs.at(0).toString() == "h3133" || /* Sony Xperia XA2 International */
-             outArgs.at(0).toString() == "h4113" || /* Sony Xperia XA2 dual SIM Europe */
-             outArgs.at(0).toString() == "h4133" || /* Sony Xperia XA2 dual SIM International */
-             outArgs.at(0).toString() == "h3413" || /* Sony Xperia XA2 Plus */
-             outArgs.at(0).toString() == "h4413" || /* Sony Xperia XA2 Plus dual  */
-             outArgs.at(0).toString() == "h3213" || /* Sony Xperia XA2 Ultra Europe */
-             outArgs.at(0).toString() == "h3223" || /* Sony Xperia XA2 Ultra US/Canada/Latin Version */
-             outArgs.at(0).toString() == "h4213" || /* Sony Xperia XA2 Ultra dual SIM Europe */
-             outArgs.at(0).toString() == "h4233"    /* Sony Xperia XA2 Ultra dual SIM International */)
+    else if (deviceName == "h3113" || /* Sony Xperia XA2 Europe */
+             deviceName == "h3123" || /* Sony Xperia XA2 US/Canada Version  */
+             deviceName == "h3133" || /* Sony Xperia XA2 International */
+             deviceName == "h4113" || /* Sony Xperia XA2 dual SIM Europe */
+             deviceName == "h4133" || /* Sony Xperia XA2 dual SIM International */
+             deviceName == "h3413" || /* Sony Xperia XA2 Plus */
+             deviceName == "h4413" || /* Sony Xperia XA2 Plus dual  */
+             deviceName == "h3213" || /* Sony Xperia XA2 Ultra Europe */
+             deviceName == "h3223" || /* Sony Xperia XA2 Ultra US/Canada/Latin Version */
+             deviceName == "h4213" || /* Sony Xperia XA2 Ultra dual SIM Europe */
+             deviceName == "h4233"    /* Sony Xperia XA2 Ultra dual SIM International */)
     {
         generalValues.clear();
         generalValues << "";
