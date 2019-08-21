@@ -323,6 +323,37 @@ bool Cmon::checkDevice()
 
         res = true;
     }
+    else if (deviceName == "i3113" || /* Sony Xperia 10 International */
+             deviceName == "i3123" || /* Sony Xperia 10 US/Canada Version  */
+             deviceName == "i4113" || /* Sony Xperia 10 dual SIM International */
+             deviceName == "i4193" || /* Sony Xperia 10 dual SIM China/Hong Kong */
+             deviceName == "i3213" || /* Sony Xperia 10 Plus International */
+             deviceName == "i3223" || /* Sony Xperia 10 Plus US/Canada Version */
+             deviceName == "i4213" || /* Sony Xperia 10 Plus dual SIM Europe/International */
+             deviceName == "i4293"    /* Sony Xperia 10 Plus dual SIM China/Hong Kong */)
+    {
+        generalValues.clear();
+        generalValues << "";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/usb/voltage_now";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/battery/current_now";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/battery/capacity";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/battery/temp";
+
+        infoPageValues.clear();
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/battery/status";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/battery/health";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/battery/technology";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/usb/real_type";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qcom,qpnp-smb2/power_supply/usb/current_max";
+
+        infoPageRawValues.clear();
+        infoPageRawValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qpnp,fg/power_supply/bms/charge_full";
+        infoPageRawValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi*/*qpnp,fg/power_supply/bms/charge_full_design";
+
+        res = true;
+    }
 
     glob(&generalValues);
     glob(&infoPageValues);
