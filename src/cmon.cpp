@@ -351,6 +351,30 @@ bool Cmon::checkDevice()
 
         res = true;
     }
+    else if (deviceName == "fp3")
+    {
+        generalValues.clear();
+        generalValues << "";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/usb/voltage_now";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/battery/current_now";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/battery/voltage_now";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/battery/capacity";
+        generalValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/battery/temp";
+
+        infoPageValues.clear();
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/battery/status";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/battery/charge_type";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/battery/health";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/battery/technology";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/usb/type";
+        infoPageValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qcom,qpnp-smb5/power_supply/usb/current_max";
+
+        infoPageRawValues.clear();
+        infoPageRawValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qpnp,qg/power_supply/bms/charge_full";
+        infoPageRawValues << "/sys/devices/platform/soc/*.qcom,spmi/spmi-0/spmi0-02/*qpnp,qg/power_supply/bms/charge_full_design";
+
+        res = true;
+    }
 
     glob(&generalValues);
     glob(&infoPageValues);
