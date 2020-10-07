@@ -17,7 +17,6 @@ Release:    1
 License:    LICENSE
 URL:        https://github.com/kimmoli/chargemon
 Source0:    %{name}-%{version}.tar.bz2
-Requires:   nemo-qml-plugin-contextkit-qt5 >= 1.1.9
 Requires:   sailfishsilica-qt5 >= 0.10.9
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Qml)
