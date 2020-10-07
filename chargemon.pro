@@ -6,7 +6,6 @@
 TARGET = harbour-chargemon
 
 CONFIG += sailfishapp
-PKGCONFIG += contextkit-statefs
 QT += dbus
 
 DEFINES += "APPVERSION=\\\"$${SPECVERSION}\\\""
