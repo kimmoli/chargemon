@@ -33,9 +33,6 @@ Cmon::Cmon(QObject *parent) :
 
     emit logFileNameChanged();
 
-    propertyTimeUntilFull.reset(new ContextProperty("Battery.TimeUntilFull", this));
-    propertyTimeUntilLow.reset(new ContextProperty("Battery.TimeUntilLow", this));
-
     QDBusConnection::sessionBus().connect("", "/com/jolla/lipstick", "com.jolla.lipstick", "coverstatus",
                           this, SLOT(handleCoverstatus(const QDBusMessage&)));
 
@@ -523,11 +520,6 @@ void Cmon::updateInfoPage()
     {
         m_infoPage.insert("capacity_left", "Unknown");
     }
-
-    /* contextproperties */
-
-    m_infoPage.insert("time_until_low", QDateTime::fromTime_t(propertyTimeUntilLow->value().toInt()).toUTC().toString("hh:mm:ss"));
-    m_infoPage.insert("time_until_full", QDateTime::fromTime_t(propertyTimeUntilFull->value().toInt()).toUTC().toString("hh:mm:ss"));
 
     emit infoPageChanged();
 }

@@ -14,16 +14,15 @@ Name:       harbour-chargemon
 Summary:    Charge monitor
 Version:    0.4.devel
 Release:    1
-Group:      Qt/Qt
 License:    LICENSE
 URL:        https://github.com/kimmoli/chargemon
 Source0:    %{name}-%{version}.tar.bz2
+Requires:   nemo-qml-plugin-contextkit-qt5 >= 1.1.9
 Requires:   sailfishsilica-qt5 >= 0.10.9
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5DBus)
-BuildRequires:  pkgconfig(contextkit-statefs)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 BuildRequires:  desktop-file-utils
 
@@ -54,6 +53,7 @@ desktop-file-install --delete-original       \
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/%{name}
+%license LICENSE
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png

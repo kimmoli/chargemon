@@ -8,7 +8,6 @@
 #include <QTextStream>
 #include <QDBusMessage>
 #include <QVariantMap>
-#include <contextproperty.h>
 
 class Cmon : public QObject
 {
@@ -80,9 +79,6 @@ private:
     bool m_writeToFile;
     QString m_logFilename;
     int m_coverStatus;
-
-    QScopedPointer<ContextProperty> propertyTimeUntilFull;
-    QScopedPointer<ContextProperty> propertyTimeUntilLow;
 
     QStringList infoPageValues;
     QStringList generalValues;
