@@ -5,3 +5,7 @@ Name=Charge monitor
 Icon=harbour-chargemon
 Exec=harbour-chargemon
 
+[X-Sailjail]
+Sandboxing=Disabled
+OrganizationName=com.kimmoli
+ApplicationName=harbour-chargemon

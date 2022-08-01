@@ -351,7 +351,8 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-    else if (deviceName == "fp3")
+    else if (deviceName == "fp3" || /* Fairphone 3 */
+             deviceName == "xqbt52"    /* Sony Xperia 10iii dual SIM */)
     {
         generalValues.clear();
         generalValues << "";
@@ -375,7 +376,6 @@ bool Cmon::checkDevice()
 
         res = true;
     }
-
     glob(&generalValues);
     glob(&infoPageValues);
     glob(&infoPageRawValues);
